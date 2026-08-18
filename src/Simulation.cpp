@@ -1,8 +1,9 @@
 #include "Simulation.h"
+#include <chrono>
 
 
 
-Simulation::Simulation() : renderer(BOIDS_COUNT), engine(BOIDS_COUNT)
+Simulation::Simulation() : renderer(BOIDS_COUNT), engine(BOIDS_COUNT, dt)
 {
 	initialize();
 }
@@ -25,9 +26,32 @@ void Simulation::initialize()
 
 void Simulation::run()
 {
+	using Clock = std::chrono::steady_clock;
+	Clock::time_point lastTime = Clock::now();
+	double accumulator = 0;
+
+
 	while (window.isOpen())
 	{
 		checkEvents();
+
+
+		auto currentTime = Clock::now();
+		std::chrono::duration<double> elapsed = currentTime - lastTime;
+		double frameTime = elapsed.count();
+		lastTime = currentTime;
+
+		if (frameTime > 0.25)
+			frameTime = 0.25;
+
+		accumulator += frameTime;
+
+		while (accumulator >= dt)
+		{
+			engine.run(positions, velocities);
+			accumulator -= dt;
+		}
+
 
 		renderer.run(positions);
 	}
