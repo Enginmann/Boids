@@ -2,7 +2,7 @@
 
 
 
-Simulation::Simulation()
+Simulation::Simulation() : renderer(BOIDS_COUNT), engine(BOIDS_COUNT)
 {
 	initialize();
 }
@@ -29,7 +29,7 @@ void Simulation::run()
 	{
 		checkEvents();
 
-		renderer.run(positions, BOIDS_COUNT);
+		renderer.run(positions);
 	}
 }
 

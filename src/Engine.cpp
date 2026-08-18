@@ -2,7 +2,7 @@
 
 
 
-Engine::Engine()
+Engine::Engine(const int boidsCount) : BOIDS_COUNT(boidsCount)
 {
 
 }

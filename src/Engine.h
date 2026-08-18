@@ -5,9 +5,10 @@
 class Engine
 {
 private:
+	const int BOIDS_COUNT;
 
 public:
-	Engine();
+	Engine(const int boidsCount);
 
 	void run();
 
