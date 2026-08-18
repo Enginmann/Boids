@@ -9,11 +9,18 @@ Simulation::Simulation()
 
 void Simulation::initialize()
 {
-	windowSize = sf::Vector2u(800, 800);
+	windowSize = sf::Vector2u(1200, 800);
 	window.create(sf::VideoMode(windowSize), "Boids", sf::Style::Titlebar | sf::Style::Close);
-	window.setFramerateLimit(60);
 
 	renderer.initialize(&window);
+
+	for (int i = 0; i < BOIDS_COUNT; i++)
+	{
+		positions[i][0] = 0;
+		positions[i][1] = 0;
+		velocities[i][0] = 0;
+		velocities[i][1] = 0;
+	}
 }
 
 void Simulation::run()
@@ -22,7 +29,7 @@ void Simulation::run()
 	{
 		checkEvents();
 
-		renderer.run();
+		renderer.run(positions, BOIDS_COUNT);
 	}
 }
 

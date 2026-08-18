@@ -14,8 +14,8 @@ public:
 
 	void initialize(sf::RenderWindow* window);
 
-	void run();
+	void run(const float positions[][2], const int BOIDS_COUNT);
 
 private:
-
+	void drawBoids(const float positions[][2], const int BOIDS_COUNT);
 };
