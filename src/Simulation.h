@@ -20,6 +20,8 @@ private:
 	float positions[BOIDS_COUNT][2];
 	float velocities[BOIDS_COUNT][2];
 
+	float perceptionRadius;
+
 public:
 	Simulation();
 

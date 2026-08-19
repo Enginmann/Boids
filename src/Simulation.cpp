@@ -11,11 +11,12 @@ Simulation::Simulation()
 
 void Simulation::initialize()
 {
-	windowSize = sf::Vector2u(1200, 800);
+	windowSize = sf::Vector2u(1500, 900);
 	window.create(sf::VideoMode(windowSize), "Boids", sf::Style::Titlebar | sf::Style::Close);
-	//window.setFramerateLimit(10);
 
 	renderer.initialize(&window);
+
+	perceptionRadius = 140;
 
 	initializeBoids();
 }
@@ -62,12 +63,12 @@ void Simulation::run()
 
 		while (accumulator >= dt)
 		{
-			engine.run(positions, velocities, windowSize, BOIDS_COUNT, dt);
+			engine.run(positions, velocities, windowSize, BOIDS_COUNT, dt, perceptionRadius);
 			accumulator -= dt;
 		}
 
 
-		renderer.run(positions, BOIDS_COUNT);
+		renderer.run(positions, velocities, BOIDS_COUNT, perceptionRadius);
 	}
 }
 

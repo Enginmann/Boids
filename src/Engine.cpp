@@ -6,9 +6,9 @@ Engine::Engine()
 {
 }
 
-void Engine::run(float positions[][2], float velocities[][2], const sf::Vector2u &windowSize, const int BOIDS_COUNT, const double dt)
+void Engine::run(float positions[][2], float velocities[][2], const sf::Vector2u &windowSize, const int BOIDS_COUNT, const double dt, const float perceptionRadius)
 {
-	alignBoids(positions, velocities, BOIDS_COUNT, dt);
+	alignBoids(positions, velocities, BOIDS_COUNT, dt, perceptionRadius);
 
 	moveBoids(positions, velocities, windowSize, BOIDS_COUNT, dt);
 }
@@ -52,9 +52,8 @@ void Engine::moveBoids(float positions[][2], float velocities[][2], const sf::Ve
 	}
 }
 
-void Engine::alignBoids(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const double dt)
+void Engine::alignBoids(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const double dt, const float perceptionRadius)
 {	
-	int radiusSqaured = 8000;
 	float alignmentFactor = 1;
 
 	accelarations = std::vector<std::vector<float>>(BOIDS_COUNT, std::vector<float>(2, 0));
@@ -77,7 +76,7 @@ void Engine::alignBoids(float positions[][2], float velocities[][2], const int B
 			float dx = positions[i][0] - positions[j][0];
 			float dy = positions[i][1] - positions[j][1];
 
-			if (dx*dx + dy*dy <= radiusSqaured)
+			if (dx*dx + dy*dy <= perceptionRadius*perceptionRadius)
 			{
 				neighbors++;
 

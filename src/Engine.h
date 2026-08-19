@@ -10,10 +10,10 @@ private:
 public:
 	Engine();
 
-	void run(float positions[][2], float velocities[][2], const sf::Vector2u &windowSize, const int BOIDS_COUNT, const double dt);
+	void run(float positions[][2], float velocities[][2], const sf::Vector2u &windowSize, const int BOIDS_COUNT, const double dt, const float perceptionRadius);
 
 private:
 	void moveBoids(float positions[][2], float velocities[][2], const sf::Vector2u &windowSize, const int BOIDS_COUNT, const double dt);
 
-	void alignBoids(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const double dt);
+	void alignBoids(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const double dt, const float perceptionRadius);
 };
