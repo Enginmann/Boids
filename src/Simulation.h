@@ -34,5 +34,7 @@ private:
 
 	void checkEvents();
 
+	void reset();
+
 	void close();
 };

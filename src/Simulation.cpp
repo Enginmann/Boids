@@ -89,8 +89,17 @@ void Simulation::checkEvents()
 			{
 				close();
 			}
+			else if (keyPressed->scancode == sf::Keyboard::Scancode::Space)
+			{
+				reset();
+			}
 		}
 	}
+}
+
+void Simulation::reset()
+{
+	initializeBoids();
 }
 
 void Simulation::close()
