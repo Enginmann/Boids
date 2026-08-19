@@ -15,5 +15,7 @@ public:
 private:
 	void moveBoids(float positions[][2], float velocities[][2], const sf::Vector2u &windowSize, const int BOIDS_COUNT, const double dt);
 
-	void alignBoids(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const double dt, const float perceptionRadius);
+	void alignment(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const float perceptionRadius);
+
+	void cohesion(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const float perceptionRadius);
 };

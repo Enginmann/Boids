@@ -8,7 +8,11 @@ Engine::Engine()
 
 void Engine::run(float positions[][2], float velocities[][2], const sf::Vector2u &windowSize, const int BOIDS_COUNT, const double dt, const float perceptionRadius)
 {
-	alignBoids(positions, velocities, BOIDS_COUNT, dt, perceptionRadius);
+	accelarations = std::vector<std::vector<float>>(BOIDS_COUNT, std::vector<float>(2, 0));
+
+	alignment(positions, velocities, BOIDS_COUNT, perceptionRadius);
+
+	cohesion(positions, velocities, BOIDS_COUNT, perceptionRadius);
 
 	moveBoids(positions, velocities, windowSize, BOIDS_COUNT, dt);
 }
@@ -52,18 +56,12 @@ void Engine::moveBoids(float positions[][2], float velocities[][2], const sf::Ve
 	}
 }
 
-void Engine::alignBoids(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const double dt, const float perceptionRadius)
-{	
-	float alignmentFactor = 1;
-
-	accelarations = std::vector<std::vector<float>>(BOIDS_COUNT, std::vector<float>(2, 0));
-
+void Engine::alignment(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const float perceptionRadius)
+{
+	float alignmentFactor = 0.5;
 
 	for (int i = 0; i < BOIDS_COUNT; i++)
 	{
-		accelarations[i][0] = 0;
-		accelarations[i][1] = 0;
-
 		int neighbors = 0;
 		float avgVelX = 0;
 		float avgVelY = 0;
@@ -76,7 +74,7 @@ void Engine::alignBoids(float positions[][2], float velocities[][2], const int B
 			float dx = positions[i][0] - positions[j][0];
 			float dy = positions[i][1] - positions[j][1];
 
-			if (dx*dx + dy*dy <= perceptionRadius*perceptionRadius)
+			if (dx * dx + dy * dy <= perceptionRadius * perceptionRadius)
 			{
 				neighbors++;
 
@@ -90,8 +88,46 @@ void Engine::alignBoids(float positions[][2], float velocities[][2], const int B
 			avgVelX /= neighbors;
 			avgVelY /= neighbors;
 
-			accelarations[i][0] = (avgVelX - velocities[i][0]) * alignmentFactor;
-			accelarations[i][1] = (avgVelY - velocities[i][1]) * alignmentFactor;
+			accelarations[i][0] += (avgVelX - velocities[i][0]) * alignmentFactor;
+			accelarations[i][1] += (avgVelY - velocities[i][1]) * alignmentFactor;
+		}
+	}
+}
+
+void Engine::cohesion(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const float perceptionRadius)
+{
+	float cohesionFactor = 0.5;
+
+	for (int i = 0; i < BOIDS_COUNT; i++)
+	{
+		int neighbors = 0;
+		float avgPosX = 0;
+		float avgPosY = 0;
+
+		for (int j = 0; j < BOIDS_COUNT; j++)
+		{
+			if (j == i)
+				continue;
+
+			float dx = positions[i][0] - positions[j][0];
+			float dy = positions[i][1] - positions[j][1];
+
+			if (dx * dx + dy * dy <= perceptionRadius * perceptionRadius)
+			{
+				neighbors++;
+
+				avgPosX += positions[j][0];
+				avgPosY += positions[j][1];
+			}
+		}
+
+		if (neighbors > 0)
+		{
+			avgPosX /= neighbors;
+			avgPosY /= neighbors;
+
+			accelarations[i][0] += (avgPosX - positions[i][0]) * cohesionFactor;
+			accelarations[i][1] += (avgPosY - positions[i][1]) * cohesionFactor;
 		}
 	}
 }
