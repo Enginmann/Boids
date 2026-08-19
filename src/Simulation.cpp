@@ -11,8 +11,11 @@ Simulation::Simulation()
 
 void Simulation::initialize()
 {
-	windowSize = sf::Vector2u(1500, 900);
+	windowSize = sf::VideoMode::getDesktopMode().size;
+	windowSize.x -= 10;
+	windowSize.y -= 120;
 	window.create(sf::VideoMode(windowSize), "Boids", sf::Style::Titlebar | sf::Style::Close);
+	window.setPosition({0, 0});
 
 	renderer.initialize(&window);
 
