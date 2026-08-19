@@ -14,7 +14,7 @@ private:
 	sf::RenderWindow window;
 	sf::Vector2u windowSize;
 
-	static const int BOIDS_COUNT = 100;
+	static const int BOIDS_COUNT = 150;
 	const float dt = 1/60.0; // 60 Hz
 
 	float positions[BOIDS_COUNT][2];
@@ -27,6 +27,8 @@ public:
 
 private:
 	void initialize();
+
+	void initializeBoids();
 
 	void checkEvents();
 

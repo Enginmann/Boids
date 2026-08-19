@@ -25,7 +25,7 @@ void Renderer::drawBoids(const float positions[][2])
 	sf::CircleShape boid(9);
 	boid.setFillColor(sf::Color::White);
 
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < BOIDS_COUNT; i++)
 	{
 		boid.setPosition({positions[i][0], positions[i][1]});
 		window->draw(boid);

@@ -1,5 +1,6 @@
 #include "Simulation.h"
 #include <chrono>
+#include <random>
 
 
 
@@ -15,12 +16,24 @@ void Simulation::initialize()
 
 	renderer.initialize(&window);
 
+	initializeBoids();
+}
+
+void Simulation::initializeBoids()
+{
+	std::random_device rd;
+	std::mt19937 gen(rd());
+
+	std::uniform_real_distribution<float> randX(0, windowSize.x);
+	std::uniform_real_distribution<float> randY(0, windowSize.y);
+	std::uniform_real_distribution<float> randVel(-0.00000002, 0.000000002);
+
 	for (int i = 0; i < BOIDS_COUNT; i++)
 	{
-		positions[i][0] = 0;
-		positions[i][1] = 0;
-		velocities[i][0] = 0;
-		velocities[i][1] = 0;
+		positions[i][0] = randX(gen);
+		positions[i][1] = randY(gen);
+		velocities[i][0] = randVel(gen);
+		velocities[i][1] = randVel(gen);
 	}
 }
 
@@ -48,7 +61,7 @@ void Simulation::run()
 
 		while (accumulator >= dt)
 		{
-			engine.run(positions, velocities);
+			engine.run(positions, velocities, windowSize);
 			accumulator -= dt;
 		}
 
