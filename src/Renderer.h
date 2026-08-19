@@ -9,15 +9,13 @@ class Renderer
 private:
 	sf::RenderWindow* window;
 
-	const int BOIDS_COUNT;
-
 public:
-	Renderer(const int boidsCount);
+	Renderer();
 
 	void initialize(sf::RenderWindow* window);
 
-	void run(const float positions[][2]);
+	void run(const float positions[][2], const int BOIDS_COUNT);
 
 private:
-	void drawBoids(const float positions[][2]);
+	void drawBoids(const float positions[][2], const int BOIDS_COUNT);
 };

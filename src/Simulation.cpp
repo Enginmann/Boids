@@ -4,7 +4,7 @@
 
 
 
-Simulation::Simulation() : renderer(BOIDS_COUNT), engine(BOIDS_COUNT, dt)
+Simulation::Simulation()
 {
 	initialize();
 }
@@ -13,6 +13,7 @@ void Simulation::initialize()
 {
 	windowSize = sf::Vector2u(1200, 800);
 	window.create(sf::VideoMode(windowSize), "Boids", sf::Style::Titlebar | sf::Style::Close);
+	//window.setFramerateLimit(10);
 
 	renderer.initialize(&window);
 
@@ -26,7 +27,7 @@ void Simulation::initializeBoids()
 
 	std::uniform_real_distribution<float> randX(0, windowSize.x);
 	std::uniform_real_distribution<float> randY(0, windowSize.y);
-	std::uniform_real_distribution<float> randVel(-0.00000002, 0.000000002);
+	std::uniform_real_distribution<float> randVel(-600, 600);
 
 	for (int i = 0; i < BOIDS_COUNT; i++)
 	{
@@ -61,12 +62,12 @@ void Simulation::run()
 
 		while (accumulator >= dt)
 		{
-			engine.run(positions, velocities, windowSize);
+			engine.run(positions, velocities, windowSize, BOIDS_COUNT, dt);
 			accumulator -= dt;
 		}
 
 
-		renderer.run(positions);
+		renderer.run(positions, BOIDS_COUNT);
 	}
 }
 
