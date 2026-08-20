@@ -4,6 +4,9 @@
 
 Engine::Engine()
 {
+	alignmentFactor = 0.9;
+	cohesionFactor = 4;
+	separationFactor = 15;
 }
 
 void Engine::run(float positions[][2], float velocities[][2], const sf::Vector2u &windowSize, const int BOIDS_COUNT, const double dt, const float perceptionRadius)
@@ -14,13 +17,15 @@ void Engine::run(float positions[][2], float velocities[][2], const sf::Vector2u
 
 	cohesion(positions, velocities, BOIDS_COUNT, perceptionRadius);
 
+	separation(positions, velocities, BOIDS_COUNT, perceptionRadius);
+
 	moveBoids(positions, velocities, windowSize, BOIDS_COUNT, dt);
 }
 
 void Engine::moveBoids(float positions[][2], float velocities[][2], const sf::Vector2u &windowSize, const int BOIDS_COUNT, const double dt)
 {
-	float maxSpeed = 500;
-	float minSpeed = 200;
+	float maxSpeed = 650;
+	float minSpeed = 350;
 
 	for (int i = 0; i < BOIDS_COUNT; i++)
 	{
@@ -58,8 +63,6 @@ void Engine::moveBoids(float positions[][2], float velocities[][2], const sf::Ve
 
 void Engine::alignment(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const float perceptionRadius)
 {
-	float alignmentFactor = 0.5;
-
 	for (int i = 0; i < BOIDS_COUNT; i++)
 	{
 		int neighbors = 0;
@@ -96,8 +99,6 @@ void Engine::alignment(float positions[][2], float velocities[][2], const int BO
 
 void Engine::cohesion(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const float perceptionRadius)
 {
-	float cohesionFactor = 0.5;
-
 	for (int i = 0; i < BOIDS_COUNT; i++)
 	{
 		int neighbors = 0;
@@ -128,6 +129,27 @@ void Engine::cohesion(float positions[][2], float velocities[][2], const int BOI
 
 			accelarations[i][0] += (avgPosX - positions[i][0]) * cohesionFactor;
 			accelarations[i][1] += (avgPosY - positions[i][1]) * cohesionFactor;
+		}
+	}
+}
+
+void Engine::separation(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const float perceptionRadius)
+{
+	for (int i = 0; i < BOIDS_COUNT; i++)
+	{
+		for (int j = 0; j < BOIDS_COUNT; j++)
+		{
+			if (j == i)
+				continue;
+
+			float dx = positions[i][0] - positions[j][0];
+			float dy = positions[i][1] - positions[j][1];
+
+			if (dx*dx + dy*dy <= perceptionRadius*perceptionRadius)
+			{
+				accelarations[i][0] -= (positions[j][0] - positions[i][0]) / std::sqrt(dx*dx + dy*dy) * separationFactor;
+				accelarations[i][1] -= (positions[j][1] - positions[i][1]) / std::sqrt(dx*dx + dy*dy) * separationFactor;
+			}
 		}
 	}
 }

@@ -5,6 +5,10 @@
 class Engine
 {
 private:
+	float alignmentFactor;
+	float cohesionFactor;
+	float separationFactor;
+
 	std::vector<std::vector<float>> accelarations;
 
 public:
@@ -18,4 +22,6 @@ private:
 	void alignment(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const float perceptionRadius);
 
 	void cohesion(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const float perceptionRadius);
+
+	void separation(float positions[][2], float velocities[][2], const int BOIDS_COUNT, const float perceptionRadius);
 };

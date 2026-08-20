@@ -30,21 +30,44 @@ void Renderer::drawBoids(const float positions[][2], const float velocities[][2]
 	boid.setPoint(1, sf::Vector2f(-10, -8));
 	boid.setPoint(2, sf::Vector2f(-10, 8));
 
+	sf::CircleShape perception(perceptionRadius);
+	perception.setOrigin({perceptionRadius, perceptionRadius});
+	
+	perception.setFillColor(sf::Color::Transparent);
+	perception.setOutlineThickness(5);
+
 	for (int i = 0; i < BOIDS_COUNT; i++)
 	{
 		float angle = std::atan2(velocities[i][1], velocities[i][0]);
 		boid.setRotation(sf::radians(angle));
 		boid.setPosition({positions[i][0], positions[i][1]});
 
-		if (i == BOIDS_COUNT - 1)
+		if (i == BOIDS_COUNT - 4)
+		{
+			boid.setFillColor(sf::Color::Blue);
+			perception.setPosition({positions[i][0], positions[i][1]});
+			perception.setOutlineColor(sf::Color::Blue);
+			window->draw(perception);
+		}
+		else if (i == BOIDS_COUNT - 3)
+		{
+			boid.setFillColor(sf::Color::Green);
+			perception.setPosition({positions[i][0], positions[i][1]});
+			perception.setOutlineColor(sf::Color::Green);
+			window->draw(perception);
+		}
+		else if (i == BOIDS_COUNT - 2)
+		{
+			boid.setFillColor(sf::Color::Yellow);
+			perception.setPosition({positions[i][0], positions[i][1]});
+			perception.setOutlineColor(sf::Color::Yellow);
+			window->draw(perception);
+		}
+		else if (i == BOIDS_COUNT - 1)
 		{
 			boid.setFillColor(sf::Color::Red);
-			sf::CircleShape perception(perceptionRadius);
-			perception.setOrigin({perceptionRadius, perceptionRadius});
 			perception.setPosition({positions[i][0], positions[i][1]});
-			perception.setFillColor(sf::Color::Transparent);
 			perception.setOutlineColor(sf::Color::Red);
-			perception.setOutlineThickness(5);
 			window->draw(perception);
 		}
 
